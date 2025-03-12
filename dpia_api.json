@@ -1,0 +1,138 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "OpenAI DPIA Assistant API",
+    "version": "1.0.0",
+    "description": "This API utilizes OpenAI's capabilities to assist in conducting Data Protection Impact Assessments (DPIA) as required under GDPR."
+  },
+  "servers": [
+    {
+      "url": "https://api.openai.com/v1"
+    }
+  ],
+  "paths": {
+    "/analyze_text": {
+      "post": {
+        "summary": "Analyze text for DPIA relevance and extract key data protection insights.",
+        "operationId": "analyzeText",
+        "requestBody": {
+          "description": "Text to be analyzed for DPIA.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "prompt": {
+                    "type": "string",
+                    "description": "Text input describing the data processing activities."
+                  },
+                  "model": {
+                    "type": "string",
+                    "default": "text-davinci-003",
+                    "description": "Specifies the model used for analysis."
+                  }
+                },
+                "required": [
+                  "prompt"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully analyzed the text.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "insights": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "suggestions": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/generate_risk_assessment": {
+      "post": {
+        "summary": "Generate a risk assessment report based on input data.",
+        "operationId": "generateRiskAssessment",
+        "requestBody": {
+          "description": "Provide data about the processing activities, identified risks, and mitigation measures.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "prompt": {
+                    "type": "string",
+                    "description": "Detailed description of processing activities and associated risks."
+                  },
+                  "max_tokens": {
+                    "type": "integer",
+                    "default": 300
+                  },
+                  "model": {
+                    "type": "string",
+                    "default": "text-davinci-003"
+                  }
+                },
+                "required": [
+                  "prompt"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully generated risk assessment.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "report": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "security": [
+    {
+      "ApiKeyAuth": []
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "ApiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "example": "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"
+      }
+    }
+  }
+}
